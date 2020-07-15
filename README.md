@@ -8,3 +8,5 @@ conda install -y cmake\
 conda install -y -c conda-forge dlib\
 conda install -y pillow\
 conda install -y natsort
+
+python main.py
