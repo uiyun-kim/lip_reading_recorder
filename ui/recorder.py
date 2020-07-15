@@ -51,7 +51,7 @@ class Recorder:
         self.framecount = 0
         self.framerate_text = tk.StringVar()
         self.info_text = tk.StringVar()
-        self.info_error_text= tk.StringVar()
+
         self.recorded_frames=[]
 
         self.face_shape =(120,120)
@@ -76,8 +76,7 @@ class Recorder:
         self.info_label = Label(self.window,textvariable=self.info_text)
         self.info_label.pack()
 
-        self.info_error_label = Label(self.window,textvariable=self.info_error_text)
-        self.info_error_label.pack()
+
 
         self.ui_start = Ui.LABEL_WITH_BUTTON(self.window,
                                                   '',
@@ -91,9 +90,13 @@ class Recorder:
             self.workers[i].off()
         self.frame.after_cancel(self.frame_after_id)
         self.cap.release()
+
         cv2.destroyAllWindows()
         self.window.destroy()
+
+
         Ui.Main()
+
         del self
 
     def show_image(self,image):
@@ -118,11 +121,9 @@ class Recorder:
                 self.show_image(frame)
 
             if self.switch:
-                self.info_error_text.set("")
-                if self.stopwatch > 3:
-                    self.info_text.set("Recording: " + str(self.stopwatch-1))
-                else:
-                    self.info_text.set("Saving To Video")
+
+                self.info_text.set("Recording: " + str(self.stopwatch-1))
+
                 self.recorded_frames.append(frame)
                 self.stopwatch = self.stopwatch - 1
                 if self.stopwatch == 0:
@@ -194,7 +195,7 @@ class Sampler():
 
 
 
-                print('[Worker ',self.worker_name,']','[',self.count,'/',self.queue.qsize()+self.count ,'] saved.' , ' [Total: ',task[2],' done]')
+                print('[Worker ',self.worker_name,']','[',self.count,'/',self.queue.qsize()+self.count ,'] saved.' , ' [Total: ',task[2]+1,' done]')
 
             else:
                 if self.switch == False:
