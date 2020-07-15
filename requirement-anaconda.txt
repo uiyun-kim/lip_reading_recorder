@@ -1,0 +1,6 @@
+conda install opencv
+conda install -c conda-forge imutils
+conda install cmake
+conda install -c conda-forge dlib
+conda install pillow
+conda install natsort
