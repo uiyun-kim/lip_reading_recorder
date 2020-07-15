@@ -7,4 +7,4 @@ conda install -y -c conda-forge imutils\
 conda install -y cmake\
 conda install -y -c conda-forge dlib\
 conda install -y pillow\
-conda install -y natsort\
+conda install -y natsort
