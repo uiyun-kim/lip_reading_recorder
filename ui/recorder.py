@@ -276,6 +276,8 @@ class Sampler():
 
             cropped = image[int(midy - yshape):int(midy + yshape), int(midx - xshape):int(midx + xshape)]
 
+            cropped = cv2.resize(cropped,dsize=(self.face_shape[1],self.face_shape[0]))
+
             outputs.append(cropped)
 
         self.face = outputs
