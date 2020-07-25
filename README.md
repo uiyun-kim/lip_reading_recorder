@@ -1,5 +1,8 @@
-# lip_reading_recorder
+# Face Dataset Recorder
  
+
+Record video clips of face in batch
+
 python 3.7
 
 conda install -y opencv\
