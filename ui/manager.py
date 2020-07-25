@@ -222,7 +222,7 @@ class Manager:
 
 class SftpClient:
     def __init__(self,ip,id,password):
-        self.host = '165.132.57.57'
+        self.host = ip
         self.username = id
         self.password = password
 
