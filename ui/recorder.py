@@ -67,14 +67,19 @@ class Recorder:
         self.count = 0
 
     def init_components(self):
+        index_row = 0
+        index_column = 0
         self.framerate_label = Label(self.window,textvariable=self.framerate_text)
-        self.framerate_label.pack()
+        self.framerate_label.grid(row=0,column=0,sticky='NSEW')
+        index_row+=1
 
         self.frame = Label(self.window)
-        self.frame.pack()
+        self.frame.grid(row=2,column=0,sticky='NSEW')
+        index_row += 1
 
         self.info_label = Label(self.window,textvariable=self.info_text)
-        self.info_label.pack()
+        self.info_label.grid(row=3,column=0, sticky='NSEW')
+        index_row += 1
 
 
 
@@ -82,7 +87,14 @@ class Recorder:
                                                   '',
                                                   '[Record Start]',
                                                   self.ui_start_command)
-        self.ui_start.pack()
+        self.ui_start.frame.grid(row=4,column=0,sticky='NSEW')
+        index_row += 1
+
+        for i in range(index_row + 1):
+            self.window.grid_rowconfigure(i, weight=1)
+
+        for i in range(index_column + 1):
+            self.window.grid_columnconfigure(i, weight=1)
 
 
     def event_close(self):
@@ -105,7 +117,9 @@ class Recorder:
         img = PIL.Image.fromarray(cv2image)
         imgtk = ImageTk.PhotoImage(image=img)
         self.frame.imgtk = imgtk
+        self.frame.grid(row=1,column=0,sticky='NSEW')
         self.frame.configure(image=imgtk)
+
 
     def record(self):
         ret, frame = self.cap.read()

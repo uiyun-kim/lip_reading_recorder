@@ -1,10 +1,12 @@
 from tkinter import *
 import os
 from environment.variable import CONFIG_PATH,DATASET_DIR,MODEL_LIST
-from tkinter import ttk
+
 import pickle
 import shutil
 import ui as Ui
+
+
 
 class Configuration:
     def __init__(self):
@@ -17,92 +19,93 @@ class Configuration:
     def load_configuration(self):
         self.configuration = pickle.load(open(CONFIG_PATH, "rb"))
 
-
     def init_window(self):
         self.window = Tk()
         self.window.protocol("WM_DELETE_WINDOW", self.event_close)
 
     def init_components(self):
 
-        self.notebook = ttk.Notebook(self.window)
-        self.init_record_tab()
-        self.notebook.grid(row=0)
+        index_row = 0
+        index_column = 0
 
+        ############################
+        self.ui_name_dataset = Ui.LABEL_WITH_ENTRY(self.window,
+                                                   'Name Dataset',
+                                                   str(self.configuration['Name Dataset']),
+                                                   20)
+        self.ui_name_dataset.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_name_class = Ui.LABEL_WITH_ENTRY(self.window,
+                                                 'Name Class',
+                                                 str(self.configuration['Name Class']),
+                                                 20)
+        self.ui_name_class.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_number_of_workers = Ui.LABEL_WITH_ENTRY(self.window,
+                                                        'Number Of Workers',
+                                                        str(self.configuration['Number Of Workers']),
+                                                        20)
+        self.ui_number_of_workers.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_sampling_rate = Ui.LABEL_WITH_ENTRY(self.window,
+                                                    'Sampling Rate',
+                                                    str(self.configuration['Sampling Rate']),
+                                                    20)
+        self.ui_sampling_rate.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_camera_width = Ui.LABEL_WITH_ENTRY(self.window,
+                                                   'Camera Width',
+                                                   str(self.configuration['Camera Width']),
+                                                   20)
+        self.ui_camera_width.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_camera_height = Ui.LABEL_WITH_ENTRY(self.window,
+                                                    'Camera Height',
+                                                    str(self.configuration['Camera Height']),
+                                                    20)
+        self.ui_camera_height.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_frames_in_one_sample = Ui.LABEL_WITH_ENTRY(self.window,
+                                                           'Frames In One Sample',
+                                                           str(self.configuration['Frames In One Sample']),
+                                                           20)
+        self.ui_frames_in_one_sample.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_delete_all_dataset = Ui.LABEL_WITH_BUTTON(self.window,
+                                                          '',
+                                                          '[DELETE ALL DATASET]',
+                                                          self.ui_delete_all_dataset_command)
+        self.ui_delete_all_dataset.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+        ############################
+        self.ui_rename_dataset_naturally = Ui.LABEL_WITH_BUTTON(self.window,
+                                                                '',
+                                                                'BATCH RENAME DATASET NATURALLY',
+                                                                self.ui_rename_dataset_naturally_command)
+        self.ui_rename_dataset_naturally.frame.grid(row=index_row, padx=20, pady=5,sticky='NSEW')
+        index_row += 1
+
+        ############################
         self.ui_save = Ui.LABEL_WITH_BUTTON(self.window,
                                             '',
                                             '[SAVE]',
                                             self.ui_save_command)
-        self.ui_save.frame.grid(row=1, padx=20, pady=5)
+        self.ui_save.frame.grid(row=index_row, padx=20, pady=40,sticky='NSEW')
+        index_row += 1
 
+        for i in range(index_row + 1):
+            self.window.grid_rowconfigure(i, weight=1)
 
-    def init_record_tab(self):
-        index_row = 0
-        self.record_setting_tab = ttk.Frame(self.notebook)
+        for i in range(index_column + 1):
+            self.window.grid_columnconfigure(i, weight=1)
 
-        self.notebook.add(self.record_setting_tab, text='Record')
-        ############################
-        self.ui_name_dataset = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                    'Name Dataset',
-                                                    str(self.configuration['Name Dataset']),
-                                                    20)
-        self.ui_name_dataset.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_name_class = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                    'Name Class',
-                                                    str(self.configuration['Name Class']),
-                                                    20)
-        self.ui_name_class.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_number_of_workers = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                    'Number Of Workers',
-                                                    str(self.configuration['Number Of Workers']),
-                                                    20)
-        self.ui_number_of_workers.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_sampling_rate = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                    'Sampling Rate',
-                                                    str(self.configuration['Sampling Rate']),
-                                                    20)
-        self.ui_sampling_rate.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_camera_width = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                   'Camera Width',
-                                                   str(self.configuration['Camera Width']),
-                                                   20)
-        self.ui_camera_width.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_camera_height = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                    'Camera Height',
-                                                    str(self.configuration['Camera Height']),
-                                                    20)
-        self.ui_camera_height.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_frames_in_one_sample = Ui.LABEL_WITH_ENTRY(self.record_setting_tab,
-                                                           'Frames In One Sample',
-                                                           str(self.configuration['Frames In One Sample']),
-                                                           20)
-        self.ui_frames_in_one_sample.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_delete_all_dataset = Ui.LABEL_WITH_BUTTON(self.record_setting_tab,
-                                                          'DELETE ALL DATASET',
-                                                          'DELETE',
-                                                          self.ui_delete_all_dataset_command)
-        self.ui_delete_all_dataset.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
-        ############################
-        self.ui_rename_dataset_naturally = Ui.LABEL_WITH_BUTTON(self.record_setting_tab,
-                                                          'RENAME DATASET NATURALLY',
-                                                          'RENAME',
-                                                          self.ui_rename_dataset_naturally_command)
-        self.ui_rename_dataset_naturally.frame.grid(row=index_row, padx=20, pady=5)
-        index_row += 1
 
     def ui_rename_dataset_naturally_command(self):
         path = os.path.join(DATASET_DIR,str(self.ui_name_dataset.entry.get()))
@@ -158,4 +161,5 @@ class Configuration:
 
     def run(self):
         self.window.mainloop()
+
 

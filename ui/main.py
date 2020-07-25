@@ -30,19 +30,36 @@ class Main:
 
     def init_components(self):
 
+        index_row = 0
+        index_column = 0
+
         self.ui_recorder = Ui.LABEL_WITH_BUTTON(self.window,
                                                   '',
                                                   '[Record]',
                                                   self.ui_recorder_command)
-        self.ui_recorder.frame.grid(row=0,padx=70,pady=10)
+        self.ui_recorder.frame.grid(row=index_row,padx=70,pady=10,sticky='NSEW')
+        index_row +=1
 
 
         self.ui_configuration = Ui.LABEL_WITH_BUTTON(self.window,
                                                   '',
                                                   '[Configuration]',
                                                   self.ui_configuration_command)
-        self.ui_configuration.frame.grid(row=2,padx=70,pady=10)
+        self.ui_configuration.frame.grid(row=index_row,padx=70,pady=10,sticky='NSEW')
+        index_row +=1
 
+        self.ui_manager = Ui.LABEL_WITH_BUTTON(self.window,
+                                                  '',
+                                                  '[Dataset Manager]',
+                                                  self.ui_manager_command)
+        self.ui_manager.frame.grid(row=index_row,padx=70,pady=10,sticky='NSEW')
+        index_row +=1
+
+        for i in range(index_row + 1):
+            self.window.grid_rowconfigure(i, weight=1)
+
+        for i in range(index_column + 1):
+            self.window.grid_columnconfigure(i, weight=1)
 
 
     def event_close(self):
@@ -50,6 +67,10 @@ class Main:
         self.window.quit()
         del self
 
+    def ui_manager_command(self):
+        self.window.destroy()
+        Ui.Manager()
+        del self
 
     def ui_configuration_command(self):
         self.window.destroy()
